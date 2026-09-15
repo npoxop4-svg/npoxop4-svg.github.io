@@ -106,7 +106,7 @@
 
     <!-- Шапка страницы -->
     <header class="header">
-      <h1>🎮 Dnevnik razrabotki: Проект №1</h1>
+      <h1>🎮 Дневник разработки: Проект №1</h1>
       <p>История создания игры от концепта до рабочих механик.</p>
     </header>
 
@@ -153,7 +153,9 @@
           let formattedDate = '';
           if (rawDate) {
             const dateObj = new Date(rawDate);
-            formattedDate = dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'Long', year: 'numeric' });
+            if (!isNaN(dateObj.getTime())) {
+              formattedDate = dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            }
           }
 
           // Очищаем текст от метаданных header
