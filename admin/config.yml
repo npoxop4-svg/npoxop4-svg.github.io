@@ -1,0 +1,18 @@
+backend:
+  name: git-gateway
+  branch: main # укажи master, если у тебя ветка называется master
+
+media_folder: "images/uploads" # куда сохранять загруженные картинки
+public_folder: "/images/uploads"
+
+collections:
+  - name: "devlogs"
+    label: "Дневники разработки"
+    folder: "content/devlogs" # где будут храниться посты
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Заголовок", name: "title", widget: "string"}
+      - {label: "Дата публикации", name: "date", widget: "datetime"}
+      - {label: "Обложка / Картинка", name: "image", widget: "image", required: false}
+      - {label: "Текст поста", name: "body", widget: "markdown"}
