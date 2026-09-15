@@ -1,1 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прохор | Творческая мастерская</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-amber: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* Nav Header */
+        header {
+            position: sticky;
+            top: 0;
+            backdrop-filter: blur(12px);
+            background-color: rgba(15, 23, 42, 0.8);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1100px;
+            margin: 4rem auto 3rem;
+            padding: 0 1.5rem;
+            text-align: left;
+        }
+
+        .hero h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin-bottom: 2rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--accent-purple);
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-header {
+            margin-bottom: 1rem;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-book { color: var(--accent-amber); }
+        .tag-music { color: var(--accent-green); }
+        .tag-game { color: var(--accent-blue); }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Social Links */
+        .socials {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-social {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .btn-social:hover {
+            background-color: var(--card-hover);
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 4rem auto 0;
+            padding: 2rem 1.5rem 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2rem; }
+            nav ul { gap: 0.75rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">Прохор.dev</div>
+            <nav>
+                <ul>
+                    <li><a href="#book">Книга</a></li>
+                    <li><a href="#music">Музыка</a></li>
+                    <li><a href="#games">Игры</a></li>
+                    <li><a href="#socials">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <span class="badge">🌱 Digital Garden</span>
+            <h1>Цифровой сад & Личный архив процессов</h1>
+            <p>Здесь я фиксирую свои идеи, выкладываю черновики книги, музыкальные эксперименты, разборы игр и мысли. Всё в формате живого журнала и разработки в реальном времени.</p>
+        </section>
+
+        <div class="container">
+            
+            <!-- КНИГА -->
+            <section id="book">
+                <h2 class="section-title">📖 Книга и Тексты</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-book">В процессе написания</div>
+                            <h3>Основная книга (Черновики)</h3>
+                            <p>Заметки по сюжету, лору мира и главам, которые пишутся прямо сейчас. Экспериментирую с подачей и повествованием.</p>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Готовность: 15%</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 15%; background-color: var(--accent-amber);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-book">Рассказы & Стихи</div>
+                            <h3>Малая проза и зарисовки</h3>
+                            <p>Короткие истории, размышления о прочитанном, впечатления от фильмов и поэтические наброски.</p>
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--accent-amber);">Смотреть архив →</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- МУЗЫКА -->
+            <section id="music">
+                <h2 class="section-title">🎵 Музыкальная лаба</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-music">Освоение инструментов</div>
+                            <h3>Практика & Аккорды</h3>
+                            <p>Записи прогрессаигры на инструментах, переложения аудио в ноты и разбор любимых треков.</p>
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--accent-green);">Слушать аудиозаметки →</span>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-music">Идеи & Саунддизайн</div>
+                            <h3>Наброски мелодий</h3>
+                            <p>Короткие мотивы и фоновые сэмплы, которые в будущем могут стать полноценными треками или саундтреком к играм.</p>
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--accent-green);">Открыть плейлист →</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ИГРЫ -->
+            <section id="games">
+                <h2 class="section-title">🎮 Разработка игр</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-game">Прототип</div>
+                            <h3>Первый игровой проект</h3>
+                            <p>Попытки в геймдизайн, изучение движков, концепт-арты, механики и дневники разработки (DevLog).</p>
+                        </div>
+                        <div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Стадия: Прототипирование</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%; background-color: var(--accent-blue);"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div>
+                            <div class="card-tag tag-game">Анализ</div>
+                            <h3>Обзоры и геймдизайн</h3>
+                            <p>Мой взгляд на игровые механики в выживачах, кооперативных хоррорах и инди-проектах.</p>
+                        </div>
+                        <span style="font-size: 0.85rem; color: var(--accent-blue);">Читать статьи →</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- СОЦСЕТИ И СВЯЗЬ -->
+            <section id="socials">
+                <h2 class="section-title">🌐 Соцсети & Связь</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Подписывайтесь, чтобы следить за обновлениями или связаться со мной:</p>
+                <div class="socials">
+                    <a href="#" class="btn-social">💬 Telegram</a>
+                    <a href="#" class="btn-social">🚀 Boosty</a>
+                    <a href="#" class="btn-social">🎬 YouTube</a>
+                    <a href="#" class="btn-social">✉️ Написать мне</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Прохор. Работает на GitHub Pages</p>
+    </footer>
+
+</body>
+</html>
