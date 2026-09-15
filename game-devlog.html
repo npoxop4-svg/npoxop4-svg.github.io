@@ -31,26 +31,78 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <a href="index.html" class="back-link">← На главную</a>
-        
-        <h1>🎮 Dnevnik razrabotki: Проект №1</h1>
-        <p class="subtitle">История создания игры от концепта до рабочих механик.</p>
-
-        <!-- Запись 2 -->
-        <article class="entry">
-            <div class="entry-date">15 Сентября 2026</div>
-            <h2>Запись #2: Первые прототипы механик</h2>
-            <p>Сегодня собрал базовый контроллер игрока и настроил физику движения. Добавил простой тестовый уровень из кубов.</p>
-            <p>Главная сложность сейчас — настроить приятный отзывчивый прыжок.</p>
-        </article>
-
-        <!-- Запись 1 -->
-        <article class="entry">
-            <div class="entry-date">10 Сентября 2026</div>
-            <h2>Запись #1: Идея и концепт</h2>
-            <p>Решил попробовать свои силы в разработке. Идея — сделать небольшой атмосферный 2D-платформер с упором на сюжет.</p>
-        </article>
+    <div id="devlog-container">
+      <p style="color: #888;">Загрузка дневников разработки...</p>
     </div>
+    
+    <script>
+      async function loadDevlogs() {
+        const container = document.getElementById('devlog-container');
+        const repoOwner = 'npoxop4-svg';
+        const repoName = 'npoxop4-svg.github.io';
+        const folderPath = 'content/devlogs';
+    
+        try {
+          // 1. Запрашиваем список файлов из папки content/devlogs через GitHub API
+          const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`);
+          
+          if (!response.ok) {
+            container.innerHTML = '<p>Пока нет опубликованных записей.</p>';
+            return;
+          }
+    
+          const files = await response.json();
+          container.innerHTML = ''; // Очищаем текст загрузки
+    
+          // 2. Сортируем файлы так, чтобы свежие посты были сверху
+          files.sort((a, b) => b.name.localeCompare(a.name));
+    
+          // 3. Перебираем каждый .md файл и выводим на страницу
+          for (const file of files) {
+            if (!file.name.endsWith('.md')) continue;
+    
+            const res = await fetch(file.download_url);
+            const text = await res.text();
+    
+            // Извлекаем заголовок и дату из YAML frontmatter
+            const titleMatch = text.match(/title:\s*["']?(.*?)["']?\r?\n/);
+            const dateMatch = text.match(/date:\s*["']?(.*?)["']?\r?\n/);
+    
+            const title = titleMatch ? titleMatch[1] : 'Без названия';
+            const rawDate = dateMatch ? dateMatch[1] : '';
+            const formattedDate = rawDate 
+              ? new Date(rawDate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+              : '';
+    
+            // Очищаем текст поста от метаданных header (всё что между --- ---)
+            const bodyContent = text.replace(/^---[\s\S]*?---/, '').trim();
+    
+            // Создаем карточку поста
+            const card = document.createElement('article');
+            card.style.cssText = `
+              background: #1b2234;
+              border: 1px solid #2a344a;
+              border-radius: 12px;
+              padding: 24px;
+              margin-bottom: 20px;
+            `;
+    
+            card.innerHTML = `
+              <div style="color: #4f46e5; font-size: 0.9em; margin-bottom: 8px; font-weight: 600;">${formattedDate}</div>
+              <h3 style="margin: 0 0 12px 0; color: #fff; font-size: 1.4em;">${title}</h3>
+              <div style="color: #94a3b8; line-height: 1.6; white-space: pre-wrap;">${bodyContent}</div>
+            `;
+    
+            container.appendChild(card);
+          }
+        } catch (error) {
+          console.error('Ошибка загрузки постов:', error);
+          container.innerHTML = '<p>Не удалось загрузить записи.</p>';
+        }
+      }
+    
+      // Запускаем загрузку при открытии страницы
+      loadDevlogs();
+    </script>
 </body>
 </html>
