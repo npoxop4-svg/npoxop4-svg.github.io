@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevLog | Первый игровой проект</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-blue: #3b82f6;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 2rem 1.5rem 4rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .back-link { display: inline-block; color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-bottom: 2rem; }
+        .back-link:hover { text-decoration: underline; }
+        h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .subtitle { color: var(--text-muted); margin-bottom: 2.5rem; }
+        
+        /* Стили для постов в дневнике */
+        .entry { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .entry-date { font-size: 0.85rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 0.5rem; }
+        .entry h2 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+        .entry p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
+        .entry p:last-child { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← На главную</a>
+        
+        <h1>🎮 Dnevnik razrabotki: Проект №1</h1>
+        <p class="subtitle">История создания игры от концепта до рабочих механик.</p>
+
+        <!-- Запись 2 -->
+        <article class="entry">
+            <div class="entry-date">15 Сентября 2026</div>
+            <h2>Запись #2: Первые прототипы механик</h2>
+            <p>Сегодня собрал базовый контроллер игрока и настроил физику движения. Добавил простой тестовый уровень из кубов.</p>
+            <p>Главная сложность сейчас — настроить приятный отзывчивый прыжок.</p>
+        </article>
+
+        <!-- Запись 1 -->
+        <article class="entry">
+            <div class="entry-date">10 Сентября 2026</div>
+            <h2>Запись #1: Идея и концепт</h2>
+            <p>Решил попробовать свои силы в разработке. Идея — сделать небольшой атмосферный 2D-платформер с упором на сюжет.</p>
+        </article>
+    </div>
+</body>
+</html>
