@@ -1,108 +1,184 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevLog | Первый игровой проект</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent-blue: #3b82f6;
-            --border-color: rgba(255, 255, 255, 0.1);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 2rem 1.5rem 4rem; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .back-link { display: inline-block; color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-bottom: 2rem; }
-        .back-link:hover { text-decoration: underline; }
-        h1 { font-size: 2.25rem; font-weight: 800; margin-bottom: 0.5rem; }
-        .subtitle { color: var(--text-muted); margin-bottom: 2.5rem; }
-        
-        /* Стили для постов в дневнике */
-        .entry { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .entry-date { font-size: 0.85rem; color: var(--accent-blue); font-weight: 600; margin-bottom: 0.5rem; }
-        .entry h2 { font-size: 1.35rem; margin-bottom: 0.75rem; }
-        .entry p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem; }
-        .entry p:last-child { margin-bottom: 0; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дневник разработки: Проект №1</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0b1120;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      padding: 40px 20px 80px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .back-link {
+      display: inline-block;
+      color: #3b82f6;
+      text-decoration: none;
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header p {
+      color: #94a3b8;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    /* Стиль карточек постов */
+    .devlog-card {
+      background: #172033;
+      border: 1px solid #232f48;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .devlog-date {
+      color: #3b82f6;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+    }
+
+    .devlog-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 14px;
+      line-height: 1.3;
+    }
+
+    .devlog-body {
+      color: #94a3b8;
+      font-size: 1rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+    }
+
+    .loading-state {
+      color: #64748b;
+      font-size: 1rem;
+      padding: 20px 0;
+    }
+  </style>
 </head>
 <body>
-    <div id="devlog-container">
-      <p style="color: #888;">Загрузка дневников разработки...</p>
-    </div>
-    
-    <script>
-      async function loadDevlogs() {
-        const container = document.getElementById('devlog-container');
-        const repoOwner = 'npoxop4-svg';
-        const repoName = 'npoxop4-svg.github.io';
-        const folderPath = 'content/devlogs';
-    
-        try {
-          // 1. Запрашиваем список файлов из папки content/devlogs через GitHub API
-          const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`);
-          
-          if (!response.ok) {
-            container.innerHTML = '<p>Пока нет опубликованных записей.</p>';
-            return;
-          }
-    
-          const files = await response.json();
-          container.innerHTML = ''; // Очищаем текст загрузки
-    
-          // 2. Сортируем файлы так, чтобы свежие посты были сверху
-          files.sort((a, b) => b.name.localeCompare(a.name));
-    
-          // 3. Перебираем каждый .md файл и выводим на страницу
-          for (const file of files) {
-            if (!file.name.endsWith('.md')) continue;
-    
-            const res = await fetch(file.download_url);
-            const text = await res.text();
-    
-            // Извлекаем заголовок и дату из YAML frontmatter
-            const titleMatch = text.match(/title:\s*["']?(.*?)["']?\r?\n/);
-            const dateMatch = text.match(/date:\s*["']?(.*?)["']?\r?\n/);
-    
-            const title = titleMatch ? titleMatch[1] : 'Без названия';
-            const rawDate = dateMatch ? dateMatch[1] : '';
-            const formattedDate = rawDate 
-              ? new Date(rawDate).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
-              : '';
-    
-            // Очищаем текст поста от метаданных header (всё что между --- ---)
-            const bodyContent = text.replace(/^---[\s\S]*?---/, '').trim();
-    
-            // Создаем карточку поста
-            const card = document.createElement('article');
-            card.style.cssText = `
-              background: #1b2234;
-              border: 1px solid #2a344a;
-              border-radius: 12px;
-              padding: 24px;
-              margin-bottom: 20px;
-            `;
-    
-            card.innerHTML = `
-              <div style="color: #4f46e5; font-size: 0.9em; margin-bottom: 8px; font-weight: 600;">${formattedDate}</div>
-              <h3 style="margin: 0 0 12px 0; color: #fff; font-size: 1.4em;">${title}</h3>
-              <div style="color: #94a3b8; line-height: 1.6; white-space: pre-wrap;">${bodyContent}</div>
-            `;
-    
-            container.appendChild(card);
-          }
-        } catch (error) {
-          console.error('Ошибка загрузки постов:', error);
-          container.innerHTML = '<p>Не удалось загрузить записи.</p>';
+
+  <div class="container">
+    <!-- Кнопка возврата -->
+    <a href="index.html" class="back-link">← На главную</a>
+
+    <!-- Шапка страницы -->
+    <header class="header">
+      <h1>🎮 Dnevnik razrabotki: Проект №1</h1>
+      <p>История создания игры от концепта до рабочих механик.</p>
+    </header>
+
+    <!-- Контейнер, куда скрипт подгружает карточки -->
+    <main id="devlog-container">
+      <p class="loading-state">Загрузка дневников разработки...</p>
+    </main>
+  </div>
+
+  <script>
+    async function loadDevlogs() {
+      const container = document.getElementById('devlog-container');
+      const repoOwner = 'npoxop4-svg';
+      const repoName = 'npoxop4-svg.github.io';
+      const folderPath = 'content/devlogs';
+
+      try {
+        const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`);
+        
+        if (!response.ok) {
+          container.innerHTML = '<p class="loading-state">Пока нет опубликованных записей.</p>';
+          return;
         }
+
+        const files = await response.json();
+        container.innerHTML = '';
+
+        // Сортировка (новые посты выше)
+        files.sort((a, b) => b.name.localeCompare(a.name));
+
+        for (const file of files) {
+          if (!file.name.endsWith('.md')) continue;
+
+          const res = await fetch(file.download_url);
+          const text = await res.text();
+
+          // Парсинг заголовка и даты
+          const titleMatch = text.match(/title:\s*["']?(.*?)["']?\r?\n/);
+          const dateMatch = text.match(/date:\s*["']?(.*?)["']?\r?\n/);
+
+          const title = titleMatch ? titleMatch[1] : 'Без названия';
+          const rawDate = dateMatch ? dateMatch[1] : '';
+          
+          let formattedDate = '';
+          if (rawDate) {
+            const dateObj = new Date(rawDate);
+            formattedDate = dateObj.toLocaleDateString('ru-RU', { day: 'numeric', month: 'Long', year: 'numeric' });
+          }
+
+          // Очищаем текст от метаданных header
+          const bodyContent = text.replace(/^---[\s\S]*?---/, '').trim();
+
+          // Создание карточки
+          const card = document.createElement('article');
+          card.className = 'devlog-card';
+
+          card.innerHTML = `
+            <div class="devlog-date">${formattedDate}</div>
+            <h2 class="devlog-title">${title}</h2>
+            <div class="devlog-body">${bodyContent}</div>
+          `;
+
+          container.appendChild(card);
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки постов:', error);
+        container.innerHTML = '<p class="loading-state">Не удалось загрузить записи.</p>';
       }
-    
-      // Запускаем загрузку при открытии страницы
-      loadDevlogs();
-    </script>
+    }
+
+    loadDevlogs();
+  </script>
+
 </body>
 </html>
